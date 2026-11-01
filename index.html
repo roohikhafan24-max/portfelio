@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fa" dir="rtl" class="lock">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RB · Rooholah</title>
+<meta name="description" content="Portfolio of Rooholah (RB), front-end developer and content creator.">
+<meta name="theme-color" content="#050506">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/kalameh.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="assets/avatar.webp" as="image">
+<style>
+@font-face{font-family:Kalameh;src:url(assets/kalameh.woff) format("woff");font-weight:100 900;font-display:swap}
+:root{--bg:#050506;--ink:#e9ebf0;--mut:#9aa0ad;--gold:#F2A900;--line:rgba(255,255,255,.1);--silver:linear-gradient(180deg,#fff 6%,#c3c8d4 52%,#5c6371 100%);--p:0}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html.lock{overflow:hidden}
+body{margin:0;color:var(--ink);font:400 17px/1.8 "Segoe UI",Tahoma,"Noto Sans Arabic","Noto Naskh Arabic",system-ui,sans-serif;overflow-x:hidden}
+[lang=en] body{line-height:1.7}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{margin:0;font-family:Kalameh,"Segoe UI",Tahoma,sans-serif;font-weight:900}
+.silver{background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#fx.top{z-index:25}
+#tx{position:fixed;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}
+#glow{position:fixed;inset:0;z-index:0;opacity:0;pointer-events:none;background:radial-gradient(55% 48% at 50% 58%,rgba(255,255,255,.085),transparent 72%)}
+/* nav */
+#nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 5vw;opacity:0;transition:background .3s}
+#nav.solid{background:rgba(5,5,6,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.brand{font:900 20px Kalameh,sans-serif;letter-spacing:.01em}
+.links{display:flex;gap:clamp(14px,2.4vw,34px);font-size:14px}
+.links a{position:relative;padding:4px 0;color:#c9ccd5}
+.links a::after{content:"";position:absolute;inset:auto 0 -2px;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .25s}
+.links a:hover::after,.links a:focus-visible::after{transform:scaleX(1)}
+#lang{font:700 13px Kalameh,sans-serif;color:var(--ink);background:none;border:1px solid var(--line);border-radius:99px;padding:5px 14px;cursor:pointer}
+#lang:hover{border-color:var(--gold);color:var(--gold)}
+/* hero */
+.hero{position:relative;height:100vh;height:100svh;min-height:540px}
+.heroText{position:absolute;left:0;right:0;bottom:15vh;text-align:center;z-index:3;transform:translateY(calc(var(--p)*-14vh));opacity:calc(1 - var(--p)*1.3)}
+#word{display:flex;justify-content:center;direction:ltr;perspective:900px;font:900 clamp(46px,13.2vw,220px)/1.05 Kalameh,"Arial Black",sans-serif;letter-spacing:-.01em}
+.ch{display:inline-block;opacity:0;background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent;will-change:transform}
+.sub{margin:14px auto 0;max-width:90vw;color:var(--mut);font-size:clamp(14px,1.6vw,22px);opacity:0}
+.sub b{color:#fff;font-weight:700}
+#dot,#bang{position:fixed;left:0;top:0;z-index:4;background:#fff;border-radius:50%;box-shadow:0 0 28px 6px rgba(255,255,255,.45);opacity:0;will-change:transform}
+#bang{border-radius:99px 99px 6px 6px;height:0}
+#skip{position:fixed;inset:auto auto 4vh 50%;transform:translateX(-50%);z-index:30;background:none;border:1px solid var(--line);color:var(--mut);border-radius:99px;padding:6px 18px;font:inherit;font-size:13px;cursor:pointer}
+#skip:hover{color:var(--gold);border-color:var(--gold)}
+#hint{position:absolute;inset:auto 0 3.5vh;text-align:center;color:var(--mut);font-size:13px;opacity:0;z-index:3}
+/* sections */
+.sec{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:14vh 6vw 4vh}
+.big{font-size:clamp(68px,13vw,190px);line-height:1.25}
+.h2{font-size:clamp(46px,8vw,118px);line-height:1.3;margin-bottom:5vh}
+.card{padding:clamp(22px,3vw,40px);border-radius:26px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.card p{margin:0 0 1em;max-width:62ch}
+.card p:last-of-type{color:var(--mut)}
+.about{display:grid;grid-template-columns:1fr 1.15fr;gap:5vw;align-items:center}
+/* pinned scene: Intro -> glowing orb -> Projects (driven by scroll, see js/textfx.js) */
+.scene{position:relative;z-index:2;height:calc(100vh + 280vh);height:calc(100svh + 280svh)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.stage .about{height:100%;padding:8vh 6vw 16vh}
+#projectsH{position:absolute;bottom:3vh;inset-inline-start:max(6vw,calc((100vw - 1240px)/2 + 6vw));margin:0;white-space:nowrap}
+.anchor{position:absolute;left:0;bottom:60vh;width:1px;height:1px;pointer-events:none}
+#projectsSec{padding-top:2vh}
+html.fail .scene,.calm .scene{height:auto}
+html.fail .stage,.calm .stage{position:static;height:auto;overflow:visible}
+html.fail .stage .about,.calm .stage .about{height:auto;padding:14vh 6vw 4vh}
+html.fail #projectsH,.calm #projectsH{position:static;display:block;margin:4vh auto 0;max-width:1240px;padding:0 6vw}
+.btn{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:12px 22px;border:1px solid var(--gold);border-radius:99px;color:var(--gold);transition:background .2s,color .2s}
+.btn:hover{background:var(--gold);color:#111}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.pc{position:relative;overflow:hidden;padding:30px;border-radius:24px;background:rgba(255,255,255,.035);border:1px solid var(--line);min-height:280px;display:flex;flex-direction:column;transition:border-color .25s}
+.pc::before{content:"";position:absolute;inset:0;background:radial-gradient(280px circle at var(--mx,50%) var(--my,0),rgba(242,169,0,.17),transparent 70%);opacity:0;transition:opacity .3s}
+.pc:hover{border-color:rgba(242,169,0,.5)}.pc:hover::before{opacity:1}
+.pc>*{position:relative}
+.pc h3{font-size:clamp(24px,2.4vw,32px);line-height:1.4;margin-bottom:10px}
+.pc p{margin:0 0 auto;color:#b3b8c4;font-size:16px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0;padding:0;list-style:none}
+.tags li{font-size:12.5px;line-height:1;padding:7px 12px;border-radius:99px;border:1px solid rgba(255,255,255,.16);color:#aab0bd;unicode-bidi:isolate}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:4vw}
+.sk h3{font-size:26px;line-height:1.4;padding-bottom:14px;margin-bottom:6px;position:relative}
+.sk h3::after{content:"";position:absolute;inset:auto auto 0 0;width:38px;height:3px;background:var(--gold);border-radius:3px}
+[dir=rtl] .sk h3::after{inset:auto 0 0 auto}
+.sk ul{margin:0;padding:0;list-style:none}
+.sk li{padding:13px 0;border-bottom:1px solid var(--line);font-size:18px;transition:color .2s,padding .2s}
+.sk li:hover{color:var(--gold);padding-inline-start:8px}
+.ct{display:flex;flex-direction:column;margin-top:3vh}
+.ct a{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0;border-bottom:1px solid var(--line);font:900 clamp(22px,3.6vw,44px)/1.3 Kalameh,sans-serif;direction:ltr;transition:color .2s,padding .25s}
+.ct a:hover{color:var(--gold);padding-inline:12px}
+.ct i{font-style:normal;font-family:system-ui,sans-serif}
+#contactP{color:var(--mut);margin:-2vh 0 0}
+footer{position:relative;z-index:2;text-align:center;color:var(--mut);font-size:14px;padding:10vh 6vw 6vh}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.rv.in{opacity:1;transform:none}
+@media (max-width:760px){
+ #nav{flex-wrap:wrap;gap:8px 16px;padding:14px 5vw}
+ .links{order:3;width:100%;overflow-x:auto;gap:18px;padding-bottom:2px;scrollbar-width:none}
+ .about{grid-template-columns:1fr}
+ .big{margin-bottom:2vh}
+ .heroText{bottom:17vh}
+ .stage .about{align-content:start;gap:1.5vh;padding:104px 5vw 0}
+ .stage .big{font-size:clamp(48px,15vw,64px);line-height:1.15;margin:0}
+ .stage .card{padding:16px 18px;border-radius:20px;font-size:14.5px;line-height:1.65}
+ .stage .card p{margin-bottom:.6em}
+ .stage .btn{margin-top:4px;padding:9px 18px}
+ #projectsH{bottom:2.5vh}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}.scene{height:auto}.stage{position:static;height:auto;overflow:visible}.stage .about{height:auto;padding:14vh 6vw 4vh}#projectsH{position:static;display:block;margin:4vh auto 0;max-width:1240px;padding:0 6vw}}
+html.fail #nav,html.fail .sub,html.fail #hint{opacity:1!important}html.fail .ch{opacity:1!important;transform:none!important}html.fail #skip,html.fail #dot,html.fail #bang{display:none}html.fail.lock{overflow:auto}
+#err{display:none;position:fixed;inset:auto 5vw 5vh;z-index:99;padding:14px 18px;border:1px solid var(--gold);border-radius:14px;background:#0b0b0d;color:#ddd;font-size:14px;direction:ltr;text-align:left}html.fail #err{display:block}
+noscript{display:block;position:fixed;inset:0;z-index:99;background:#050506;color:#fff;padding:30vh 10vw;text-align:center}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<canvas id="tx" aria-hidden="true"></canvas>
+<div id="glow"></div>
+<nav id="nav" aria-label="Main">
+  <a class="brand" id="brand" href="#home"></a>
+  <div class="links"><a id="n-home" href="#home"></a><a id="n-about" href="#about"></a><a id="n-projects" href="#projects"></a><a id="n-skills" href="#skills"></a><a id="n-contact" href="#contact"></a></div>
+  <button id="lang" type="button" aria-label="Language"></button>
+</nav>
+<main>
+  <section id="home" class="hero">
+    <div class="heroText"><h1 id="word" aria-label="Portfolio"></h1><p id="sub" class="sub"></p></div>
+    <div id="dot"></div><div id="bang"></div>
+    <button id="skip" type="button"></button><div id="hint"></div>
+  </section>
+  <section id="about" class="scene">
+    <div id="stage" class="stage">
+      <div class="sec about">
+        <h2 id="aboutH" class="big silver"></h2>
+        <div id="aboutCard" class="card"><p id="aboutP"></p><p id="aboutNote"></p><a id="resume" class="btn" href="#" download>x <span aria-hidden="true">↓</span></a></div>
+      </div>
+      <h2 id="projectsH" class="h2 silver"></h2>
+    </div>
+    <span id="projects" class="anchor"></span>
+  </section>
+  <section id="projectsSec" class="sec"><div id="projectsList" class="grid"></div></section>
+  <section id="skills" class="sec"><h2 id="skillsH" class="h2 silver rv"></h2><div id="skillsList" class="cols"></div></section>
+  <section id="contact" class="sec"><h2 id="contactH" class="h2 silver rv"></h2><p id="contactP"></p><div id="contactList" class="ct"></div></section>
+</main>
+<footer id="foot"></footer>
+<p id="err">Something failed to load. Open the site through Live Server from inside the rb-portfolio folder, press F12 &rarr; Console and check the red error.</p>
+<noscript>Rooholah · RB — please enable JavaScript.</noscript>
+<script>setTimeout(function(){var r=document.documentElement;if(!r.classList.contains("ready")){r.classList.remove("lock");r.classList.add("fail")}},6000)</script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
